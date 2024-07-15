@@ -22,7 +22,7 @@ const SignUp: React.FC = () => {
       // Handle successful sign-up
       setPasswordMismatch(false);
       try {
-        const response = await fetch('https://protal-ke5m6qbmkq-as.a.run.app/api/register', {
+        const response = await fetch('https://backend-ke5m6qbmkq-as.a.run.app/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

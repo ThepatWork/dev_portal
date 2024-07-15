@@ -34,7 +34,7 @@ const Login: React.FC = () => {
     e.preventDefault();
   
     try {
-      const response = await fetch('https://protal-ke5m6qbmkq-as.a.run.app/api/login', {
+      const response = await fetch('https://backend-ke5m6qbmkq-as.a.run.app/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

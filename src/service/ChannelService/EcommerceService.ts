@@ -4,7 +4,7 @@ import { IStore, IBusiness, IProductToHandle, IBusinessToHandle} from "@/models/
 import { IProduct } from "@/models/IChannel";
 
 // const API_URL = "http://localhost:3002/api"; //อย่าลืมย้ายไปใส่ env
-const API_URL = "https://protal-ke5m6qbmkq-as.a.run.app/api"; //อย่าลืมย้ายไปใส่ env
+const API_URL = "https://backend-ke5m6qbmkq-as.a.run.app/api"; //อย่าลืมย้ายไปใส่ env
 
 const getAuthToken = () => {
   return localStorage.getItem('token');
