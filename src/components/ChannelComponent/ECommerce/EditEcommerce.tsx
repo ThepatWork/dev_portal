@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { IOpenTime } from "@/models/IOpenTime";
 import "react-toastify/dist/ReactToastify.css";
-import { useDataChannel } from "@/store/dataChannel";
+import { useDataChannel, useProductStore } from "@/store/dataChannel";
 import Opentime from "@/components/OpenTime/Opentime";
 import { ToastContainer, toast } from "react-toastify";
 import "@/components/ChannelComponent/ECommerce/Ecommerce.css";
@@ -10,29 +10,45 @@ import { Address, FormData } from "@/models/IEcommerceChannel";
 import ecommerceService from "@/service/ChannelService/EcommerceService";
 import { AddressInput } from "@/components/ChannelComponent/ECommerce/AddressInput";
 import { ScollUpToTop } from "@/utils/Scoll";
+import { IProduct } from "@/models/IChannel";
+import Swal from "sweetalert2";
+import showAlert from "@/components/Alert/Alert";
 
 const EditEcommerce: React.FC = () => {
   ScollUpToTop();
   const { dataChannel } = useDataChannel();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formData, setFormData] = useState(dataInitial);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const { setProducts: setProductStore } = useProductStore();
 
   useEffect(() => {
     if (!dataChannel) {
       window.location.href = "/";
     } else {
       setFormData({
-        business_name: dataChannel.details.business_name,
-        business_type: dataChannel.details.business_type,
-        description: dataChannel.details.description,
-        address: dataChannel.details.address,
-        phone: dataChannel.details.phone,
-        email: dataChannel.details.email,
-        website: dataChannel.details.website,
-        opentime: dataChannel.details.opentime,
+        business_name: dataChannel.business_name,
+        business_type: dataChannel.business_type,
+        description: dataChannel.description,
+        address: dataChannel.address,
+        phone: dataChannel.phone,
+        email: dataChannel.email,
+        website: dataChannel.website,
+        opentime: dataChannel.opentime,
       });
     }
+    const fetchData = async () => {
+      const productDataResponse = await ecommerceService.listProduct(
+        dataChannel!._id
+      );
+      setProducts(productDataResponse);
+    };
+    fetchData();
   }, [dataChannel]);
+
+  useEffect(() => {
+    setProductStore(products);
+  }, [products, setProductStore]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -62,7 +78,7 @@ const EditEcommerce: React.FC = () => {
 
     if (dataChannel) {
       try {
-        await ecommerceService.edit(dataChannel.page_id, dataToSubmit);
+        await ecommerceService.editChennel(dataChannel._id, dataToSubmit);
         toast.success("ข้อมูลถูกบันทึกเรียบร้อยแล้ว");
         toggleEdit();
       } catch (error) {
@@ -93,6 +109,49 @@ const EditEcommerce: React.FC = () => {
         [day]: { ...prev.opentime[day], [type]: value },
       },
     }));
+  };
+
+  const handleDeleteChannel = async () => {
+    try {
+      if (dataChannel) {
+        const result = await Swal.fire({
+          title: "คุณกำลังลบรายการช่องอย่าถาวร",
+          html: `❗ หากดำเนินการจต่อจะไม่สามารถกู้คือข้อมูลได้ ❗ <br/> โปรดยืนยันการลบโดยการพิมพ์ " ${dataChannel.business_name} " `,
+          input: "text",
+          inputAttributes: {
+            autocapitalize: "off",
+          },
+          showCancelButton: true,
+          showLoaderOnConfirm: true,
+          confirmButtonText: "ลบ",
+          cancelButtonText: "ยกเลิก",
+          confirmButtonColor:"#FB923C",
+          preConfirm: (input) => {
+            return input;
+          },
+        });
+  
+        if (result.isConfirmed) {
+          if (result.value === dataChannel.business_name) {
+            await ecommerceService.deleteChennel(dataChannel._id);
+            await showAlert({ icon: 'success', title: `ลบ ${dataChannel.business_name} เสร็จสิ้น` });
+            window.location.href = "http://localhost:3001/";
+          } else {
+            Swal.fire({
+              title: "การลบ " + `${dataChannel.business_name}` + " ผิดพลาด",
+              icon: "error",
+            });
+          }
+        }
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถลบช่องได้ โปรดลองอีกครั้ง",
+        icon: "error",
+      });
+      console.error("Error deleting channel:", error);
+    }
   };
 
   return (
@@ -259,13 +318,22 @@ const EditEcommerce: React.FC = () => {
               </button>
             </>
           ) : (
-            <button
-              type="button"
-              onClick={toggleEdit}
-              className="mt-4 p-2 bg-orange-400 text-white rounded-md hover:bg-orange-500 focus:ring-2 focus:ring-yellow-500 focus:outline-none"
-            >
-              แก้ไขข้อมูล
-            </button>
+            <div>
+              <button
+                type="button"
+                onClick={handleDeleteChannel}
+                className="mt-4 p-2 px-4 bg-red-400 text-white rounded-md hover:text-white hover:bg-red-600 focus:ring-2 focus:ring-white focus:outline-none mr-2"
+              >
+                ลบช่องนี้
+              </button>
+              <button
+                type="button"
+                onClick={toggleEdit}
+                className="mt-4 p-2 bg-orange-400 text-white rounded-md hover:bg-orange-500 focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+              >
+                แก้ไขข้อมูล
+              </button>
+            </div>
           )}
         </div>
       </form>
