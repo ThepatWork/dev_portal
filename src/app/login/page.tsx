@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     localStorage.setItem('userEmail', email);
     localStorage.setItem('loginType', 'google');
   
-    router.push('http://localhost:3001');
+    router.push('https://dev-portal-xi.vercel.app/');
   };
 
   const onFailure = (response: any) => {

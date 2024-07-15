@@ -91,7 +91,7 @@ const FormAddNewChannel = ({
       await showAlert({ icon: 'success', title: `บันทึกสำเร็จ` });
       if (typeof window !== "undefined") {
         // window.location.href = "http://localhost:3001/channel_manager";
-        window.location.href = "http://localhost:3001/";
+        window.location.href = "https://dev-portal-xi.vercel.app/";
       }
     } catch (error) {
       toast.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล\nรหัสความผิดพลาด:FZF0001");
