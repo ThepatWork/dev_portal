@@ -29,7 +29,7 @@ const apiCall = async <T>(
     return response.data;
   } catch (error: AxiosError | any) {
     if (error.response && error.response.status === 401) {
-      window.location.href = 'http://localhost:3001/login';
+      window.location.href = 'https://dev-portal-xi.vercel.app/login';
     }
     console.log('error = ',error);
     

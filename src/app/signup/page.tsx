@@ -40,7 +40,7 @@ const SignUp: React.FC = () => {
           throw new Error('Invalid response format. Please try again later.');
         }
   
-        router.push('http://localhost:3001/login');
+        router.push('https://dev-portal-xi.vercel.app/login');
       } catch (error) {
         console.error('Register error:', error);
       }
