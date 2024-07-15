@@ -60,7 +60,7 @@ const Login: React.FC = () => {
       localStorage.setItem('token', data.token);
       console.log('Login success:', localStorage.getItem('userId'));
   
-      router.push('http://localhost:3001');
+      router.push('https://dev-portal-xi.vercel.app/');
     } catch (error) {
       console.error('Login error:', error);
       alert('Login failed. Your Email or Password is incorrect. Please try again.');
