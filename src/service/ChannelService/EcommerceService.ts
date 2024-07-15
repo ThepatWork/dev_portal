@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { IStore, IBusiness, IProductToHandle, IBusinessToHandle} from "@/models/IChannel";
-import { mockListChannel } from "@/service/PageService"; //ใช้สำหรับการทดสอบเท่านั้น
+// import { mockListChannel } from "@/service/PageService"; //ใช้สำหรับการทดสอบเท่านั้น
 import { IProduct } from "@/models/IChannel";
 
 // const API_URL = "http://localhost:3002/api"; //อย่าลืมย้ายไปใส่ env

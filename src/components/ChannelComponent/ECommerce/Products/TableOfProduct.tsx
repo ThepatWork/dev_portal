@@ -3,6 +3,7 @@ import type {
   IProductInTable,
   TableOfProductProps,
 } from "@/models/IEcommerceChannel";
+import { IProduct } from "@/models/Product";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React from "react";
@@ -84,7 +85,9 @@ const TableOfProduct: React.FC<TableOfProductProps> = ({
                 cancelButtonText: "ยกเลิก",
               }).then((result: { isConfirmed: any }) => {
                 if (result.isConfirmed) {
-                  handleDeleteProduct(record.key);
+                  if (record.key){
+                    handleDeleteProduct(record.key.toString());
+                  }
                 }
               });
             }}
@@ -98,7 +101,7 @@ const TableOfProduct: React.FC<TableOfProductProps> = ({
 
   return (
     <Table
-      columns={columns}
+      columns={columns as ColumnsType<IProduct>}
       dataSource={dataInTable}
       size="middle"
       pagination={{

@@ -91,23 +91,23 @@ const Products: React.FC = () => {
     setProducts(productDataResponse);
   }
 
-  // const handleDeleteProduct = async (index: number) => {
-  //   try {
-  //     const updatedProducts = dataChannel.details.product.filter((_, i) => i !== index);
+  const handleDeleteProduct = async (index: string) => {
+    try {
+      // const updatedProducts = dataChannel.details.product.filter((_, i) => i !== index);
   
-  //     const dataToUpdate = {
-  //       product: updatedProducts,
-  //     };
+      // const dataToUpdate = {
+      //   product: updatedProducts,
+      // };
   
-  //     await ecommerceService.updateProduct(
-  //       dataChannel.page_id,
-  //       dataToUpdate
-  //     );
-  //     toast.success("สินค้าถูกลบเรียบร้อยแล้ว");
-  //   } catch (error) {
-  //     toast.error("เกิดข้อผิดพลาดในการลบสินค้า\nรหัสความผิดพลาด:FZF0002");
-  //   }
-  // };
+      // await ecommerceService.updateProduct(
+      //   dataChannel.page_id,
+      //   dataToUpdate
+      // );
+      toast.success("ปุ่มลบทำงาน แต่รับบยังไม่เสร็จสิ้น");
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาดในการลบสินค้า\nรหัสความผิดพลาด:FZF0002");
+    }
+  };
 
   return (
     <section className="flex flex-col items-center ">
@@ -142,6 +142,7 @@ const Products: React.FC = () => {
           setIsEdit={setIsEdit}
           setDataEditProduct={setDataEditProduct}
           handleModal={handleModal}
+          handleDeleteProduct={handleDeleteProduct}
         />
       </div>
       <ModalProduct
